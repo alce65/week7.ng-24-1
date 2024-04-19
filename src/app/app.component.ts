@@ -1,13 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HeaderComponent } from './components/header/header.component';
+import { StateService } from './services/state.service';
 
 @Component({
   selector: 'isdi-root',
   standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  imports: [RouterOutlet, HeaderComponent],
+  template: ` <isdi-header />
+    <router-outlet />`,
+  styles: ``,
 })
 export class AppComponent {
-  title = 'week7.ng';
+  stateService = inject(StateService);
+
+  constructor() {
+    const stringToken = localStorage.getItem('week7.ng');
+    if (stringToken) {
+      const { token } = JSON.parse(stringToken);
+      this.stateService.setLogin(token);
+    }
+  }
 }
