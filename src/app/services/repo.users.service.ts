@@ -10,15 +10,16 @@ export class RepoUsersService {
   httpClient = inject(HttpClient);
   url = environment.apiUrl + '/users';
 
-  login(_data: UserLoginDto) {
-    const data = {
-      name: _data.username,
-      password: _data.password,
-    };
+  login(data: UserLoginDto) {
     return this.httpClient.post<{ token: string }>(this.url + '/login', data);
   }
 
   getById(id: string) {
     return this.httpClient.get(this.url + '/' + id);
+  }
+
+  create(data: FormData) {
+    const url = this.url + '/register';
+    return this.httpClient.post(url, data);
   }
 }

@@ -1,19 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { State, StateService } from '../../services/state.service';
-import { LoginComponent } from '../login/login.component';
 import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'isdi-home',
   standalone: true,
-  imports: [LoginComponent, JsonPipe],
+  imports: [JsonPipe],
   template: `
     <h2>Home</h2>
 
     @switch (state.loginState) { @case ('idle') {
     <p>Esperando al usuario</p>
-    } @case ('logging') {
-    <isdi-login />
     } @case ('logged') {
     <p>Welcome</p>
     <pre>{{ state.currenUser | json }}</pre>

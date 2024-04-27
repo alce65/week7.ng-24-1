@@ -10,26 +10,40 @@ import { StateService } from '../../services/state.service';
   imports: [ReactiveFormsModule],
   template: `
     <form [formGroup]="formLogin" (ngSubmit)="submit()">
-      <label for="username">Username</label>
-      <input id="username" type="text" formControlName="username" />
-      <label for="password">Password</label>
-      <input id="password" type="password" formControlName="password" />
+      <div>
+        <label for="user">Username / email</label>
+        <input id="user" type="text" formControlName="user" />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" />
+      </div>
+
       <button type="submit" [disabled]="formLogin.invalid">Submit</button>
     </form>
   `,
   styles: ``,
 })
-export class LoginComponent {
+export default class LoginComponent {
   private repo = inject(RepoUsersService);
   private state = inject(StateService);
   private fb = inject(FormBuilder);
   formLogin = this.fb.group({
-    username: ['', Validators.required],
+    user: ['', Validators.required],
     password: ['', Validators.required],
   });
 
   submit() {
-    this.repo.login(this.formLogin.value as UserLoginDto).subscribe({
+    const { user, password } = this.formLogin.value;
+    const userLogin = { password } as UserLoginDto;
+
+    if (user!.includes('@')) {
+      userLogin.email = this.formLogin.value.user as string;
+    } else {
+      userLogin.name = this.formLogin.value.user as string;
+    }
+
+    this.repo.login(userLogin).subscribe({
       next: ({ token }) => {
         this.state.setLogin(token);
         console.log('Logged in', token);

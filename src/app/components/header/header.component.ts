@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { StateService } from '../../services/state.service';
 import { AsyncPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'isdi-header',
@@ -10,12 +11,15 @@ import { AsyncPipe } from '@angular/common';
     <header>
       <h1>
         <span>Week 7 </span>
-        @if ( (stateService.getState() | async)!.loginState === 'logged') {
-        <button (click)="onClickLogout()">Logout'</button>
-        <button (click)="onClickArticles()">Artículos</button>
-        } @else {
-        <button (click)="onClickLogin()">Login</button>
-        }
+        <div>
+          @if ( (stateService.getState() | async)!.loginState === 'logged') {
+          <button (click)="onClickArticles()">Artículos</button>
+          <button (click)="onClickLogout()">Logout'</button>
+          } @else {
+          <button (click)="onClickRegister()">Registro</button>
+          <button (click)="onClickLogin()">Login</button>
+          }
+        </div>
       </h1>
     </header>
   `,
@@ -31,9 +35,11 @@ import { AsyncPipe } from '@angular/common';
 })
 export class HeaderComponent {
   stateService = inject(StateService);
+  router = inject(Router);
 
   onClickLogin() {
     this.stateService.setLoginState('logging');
+    this.router.navigate(['login']);
   }
 
   onClickLogout() {
@@ -41,6 +47,11 @@ export class HeaderComponent {
   }
 
   onClickArticles() {
-    this.stateService.loadArticles();
+    this.router.navigate(['articles']);
+  }
+
+  onClickRegister() {
+    console.log('Registro');
+    this.router.navigate(['register']);
   }
 }
