@@ -1,29 +1,44 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { StateService } from './services/state.service';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let service: StateService;
+
+  const mockStateService = jasmine.createSpyObj('StateService', {
+    getState: of({ loginState: 'logged' }),
+    setLogin: undefined,
+  });
+
   beforeEach(async () => {
+    spyOn(localStorage, 'getItem').and.returnValue(
+      JSON.stringify({ token: 'valid token' }),
+    );
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [
+        {
+          provide: StateService,
+          useValue: mockStateService,
+        },
+      ],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    service = TestBed.inject(StateService);
+    fixture.detectChanges();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it(`should have the 'week7.ng' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('week7.ng');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, week7.ng');
+  it(`should check localStorage for a possible token and use it`, () => {
+    expect(localStorage.getItem).toHaveBeenCalled();
+    expect(service.setLogin).toHaveBeenCalledWith('valid token');
   });
 });

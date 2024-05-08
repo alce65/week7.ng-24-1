@@ -12,26 +12,27 @@ import { Router } from '@angular/router';
       <h1>
         <span>Week 7 </span>
         <div>
-          @if ( (stateService.getState() | async)!.loginState === 'logged') {
-          <button (click)="onClickArticles()">Artículos</button>
-          <button (click)="onClickLogout()">Logout'</button>
+          @if ((stateService.getState() | async)!.loginState === 'logged') {
+            <button (click)="onClickArticles()">Artículos</button>
+            <button (click)="onClickLogout()">Logout</button>
           } @else {
-          <button (click)="onClickRegister()">Registro</button>
-          <button (click)="onClickLogin()">Login</button>
+            <button (click)="onClickRegister()">Registro</button>
+            <button (click)="onClickLogin()">Login</button>
           }
         </div>
       </h1>
     </header>
   `,
   styles: `
-  h1 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background-color: #333;
-    color: #fff;
-  }`,
+    h1 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: #333;
+      color: #fff;
+    }
+  `,
 })
 export class HeaderComponent {
   stateService = inject(StateService);

@@ -7,14 +7,20 @@ import { StateService } from './services/state.service';
   selector: 'isdi-root',
   standalone: true,
   imports: [RouterOutlet, HeaderComponent],
-  template: ` <isdi-header />
-    <router-outlet />`,
+  template: `
+    <isdi-header />
+    <router-outlet />
+  `,
   styles: ``,
 })
 export class AppComponent {
   stateService = inject(StateService);
 
   constructor() {
+    this.setInitialLogin();
+  }
+
+  setInitialLogin() {
     const stringToken = localStorage.getItem('week7.ng');
     if (stringToken) {
       const { token } = JSON.parse(stringToken);

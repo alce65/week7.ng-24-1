@@ -85,7 +85,7 @@ export default class RegisterComponent {
 
     return this.repo.create(fd).subscribe((data) => {
       console.log(data);
-      this.router.navigate(['/home']);
+      this.router.navigate(['home']);
     });
   }
 }
