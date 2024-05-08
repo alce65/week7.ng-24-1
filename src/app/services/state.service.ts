@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { RepoArticlesService } from './repo.articles.service';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { RepoArticlesService } from './repo.articles.service';
 import { RepoUsersService } from './repo.users.service';
 import { Article } from '../models/article.model';
 
@@ -35,8 +35,7 @@ export class StateService {
   private state$ = new BehaviorSubject<State>(initialState);
   private repoArticles = inject(RepoArticlesService);
   private repoUsers = inject(RepoUsersService);
-
-  constructor() {}
+  jwtDecode = jwtDecode;
 
   getState(): Observable<State> {
     return this.state$.asObservable();
@@ -55,7 +54,7 @@ export class StateService {
   }
 
   setLogin(token: string) {
-    const currenPayload = jwtDecode(token) as Payload;
+    const currenPayload = this.jwtDecode(token) as Payload;
     localStorage.setItem('week7.ng', JSON.stringify({ token }));
     this.repoUsers.getById(currenPayload.id).subscribe((user) => {
       this.state$.next({

@@ -1,6 +1,40 @@
 # Week7Ng
 
+Aplicación básica para explicar en el lado front los procesos de
+
+- registro
+- login
+- logout
+- protección de rutas (guards)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.0.
+
+## Instalación
+
+```bash
+ng new week7-ng 
+cd week7-ng
+ng add @angular-eslint/schematics  
+npm i -D prettier
+npm i -D karma-mocha-reporter
+ng g config karma
+```
+
+### Configuración de karma
+
+```js
+  plugins: [
+      // ...
+      require("karma-mocha-reporter"),
+      require("@angular-devkit/build-angular/plugins/karma"),
+    ],
+    coverageReporter: {
+      //...
+      reporters: [{ type: "lcov" }, { type: "text" }],
+    },
+    reporters: ["mocha", "kjhtml"],
+    //...
+```
 
 ## Development server
 
